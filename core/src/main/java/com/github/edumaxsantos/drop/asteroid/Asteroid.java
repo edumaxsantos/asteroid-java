@@ -13,12 +13,8 @@ public class Asteroid extends FlyingObject {
     }
 
     public static Asteroid random(Body body) {
-        int x, y;
-
-        do {
-            x = MathUtils.random(-50, Gdx.graphics.getWidth());
-            y = MathUtils.random(-50, Gdx.graphics.getHeight());
-        } while ((x > 0 && x < Gdx.graphics.getWidth()) && (y > 0 && y < Gdx.graphics.getHeight()));
+        var x = body.getPosition().x;
+        var y = body.getPosition().y;
 
         var velocity = MathUtils.random(50, 350);
         var centerX = Gdx.graphics.getWidth() / 2;

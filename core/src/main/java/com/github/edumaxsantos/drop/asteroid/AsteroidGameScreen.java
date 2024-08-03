@@ -37,10 +37,12 @@ public class AsteroidGameScreen extends ScreenAdapter {
         this.flyingObjects = new Array<>();
         this.world = new World(new Vector2(0, 0), true);
 
-        var shipX = Ship.getRealWidth();
-        var shipY = Ship.getRealHeight();
+        var shipWidth = Ship.getRealWidth();
+        var shipHeight = Ship.getRealHeight();
 
-        var shipBody = createBox(world, (float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2, shipX, shipY, BodyDef.BodyType.DynamicBody);
+        var initialPosition = new Vector2((float) Gdx.graphics.getWidth() / 2, (float) Gdx.graphics.getHeight() / 2);
+
+        var shipBody = createBox(world, initialPosition, shipWidth, shipHeight, BodyDef.BodyType.DynamicBody);
 
         ship = new Ship(this, shipBody);
 
@@ -119,14 +121,16 @@ public class AsteroidGameScreen extends ScreenAdapter {
     }
 
     private void spawnStarGold() {
-        var starGoldBody = createCircle(world, 50, 50, StarGold.getRealWidth(), BodyDef.BodyType.DynamicBody);
+        var initialPosition = FlyingObject.getInitialPosition();
+        var starGoldBody = createCircle(world, initialPosition, StarGold.getRealWidth(), BodyDef.BodyType.DynamicBody);
         var starGold = StarGold.random(starGoldBody);
 
         flyingObjects.add(starGold);
     }
 
     private void spawnAsteroid() {
-        var asteroidBody = createCircle(world, 50, 50, Asteroid.getRealWidth(), BodyDef.BodyType.DynamicBody);
+        var initialPosition = FlyingObject.getInitialPosition();
+        var asteroidBody = createCircle(world, initialPosition, Asteroid.getRealWidth(), BodyDef.BodyType.DynamicBody);
         var asteroid = Asteroid.random(asteroidBody);
 
         flyingObjects.add(asteroid);

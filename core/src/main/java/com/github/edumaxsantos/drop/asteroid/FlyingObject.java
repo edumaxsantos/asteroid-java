@@ -3,6 +3,8 @@ package com.github.edumaxsantos.drop.asteroid;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Align;
@@ -44,6 +46,17 @@ public class FlyingObject extends Actor {
         this.damage = 75;
 
         this.healthBar = new HealthBar(this, healthComponent, false);
+    }
+
+    public static Vector2 getInitialPosition() {
+        int x, y;
+
+        do {
+            x = MathUtils.random(0, Gdx.graphics.getWidth());
+            y = MathUtils.random(0, Gdx.graphics.getHeight());
+        } while ((x > 0 && x < Gdx.graphics.getWidth()) && (y > 0 && y < Gdx.graphics.getHeight()));
+
+        return new Vector2(x, y);
     }
 
     protected void handleBoundaries() {

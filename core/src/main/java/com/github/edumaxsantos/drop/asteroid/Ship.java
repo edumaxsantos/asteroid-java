@@ -66,7 +66,7 @@ public class Ship extends Group {
             if (TimeUtils.nanoTime() - lastNano > TimeUnit.MILLISECONDS.toNanos(FIRING_SPEED_IN_MS)) {
                 var initialPosition = new Vector2(getX() + getRealWidth(), getY() + getRealHeight());
                 var mousePosition = new Vector2(mouseX, mouseY);
-                var body = createBox(screen.world, initialPosition.x, initialPosition.y, 1, Missile.SIZE, BodyDef.BodyType.DynamicBody);
+                var body = createBox(screen.world, initialPosition, 1, Missile.SIZE, BodyDef.BodyType.DynamicBody);
                 missiles.add(new Missile(this, screen.game.stage.getBatch(), initialPosition, mousePosition, body));
                 lastNano = TimeUtils.nanoTime();
             }
