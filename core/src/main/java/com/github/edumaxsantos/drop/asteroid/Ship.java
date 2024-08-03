@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.github.edumaxsantos.drop.asteroid.BodyFactory.createBox;
+
 public class Ship extends Group {
     private final static Texture texture = new Texture(Gdx.files.internal("asteroid/playerShip1_green.png"));
     private final static float scale = 0.5f;
@@ -64,7 +66,7 @@ public class Ship extends Group {
             if (TimeUtils.nanoTime() - lastNano > TimeUnit.MILLISECONDS.toNanos(FIRING_SPEED_IN_MS)) {
                 var initialPosition = new Vector2(getX() + getRealWidth(), getY() + getRealHeight());
                 var mousePosition = new Vector2(mouseX, mouseY);
-                var body = screen.createBox(initialPosition.x, initialPosition.y, 1, Missile.SIZE, BodyDef.BodyType.DynamicBody);
+                var body = createBox(screen.world, initialPosition.x, initialPosition.y, 1, Missile.SIZE, BodyDef.BodyType.DynamicBody);
                 missiles.add(new Missile(this, screen.game.stage.getBatch(), initialPosition, mousePosition, body));
                 lastNano = TimeUtils.nanoTime();
             }
@@ -87,6 +89,11 @@ public class Ship extends Group {
 
     public boolean isDead() {
         return healthComponent.isDead();
+    }
+
+    public void heal(float amount) {
+        healthComponent.heal(amount);
+        healthBar.setVisible(true);
     }
 
     public void takeDamage(float damage) {
