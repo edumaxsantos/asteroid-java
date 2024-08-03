@@ -5,14 +5,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 
-public class Asteroid extends FlyingObject {
-    private final static Texture texture = new Texture(Gdx.files.internal("asteroid/meteorBrown_small2.png"));
-
-    private Asteroid(float x, float y, boolean goDown, boolean goLeft, float velocity, Body body) {
+public class StarGold extends FlyingObject {
+    private final static Texture texture = new Texture(Gdx.files.internal("asteroid/star_gold.png"));
+    private StarGold(float x, float y, boolean goDown, boolean goLeft, float velocity, Body body) {
         super(texture, x, y, goDown, goLeft, velocity, body);
     }
 
-    public static Asteroid random(Body body) {
+    public static StarGold random(Body body) {
         int x, y;
 
         do {
@@ -20,22 +19,22 @@ public class Asteroid extends FlyingObject {
             y = MathUtils.random(-50, Gdx.graphics.getHeight());
         } while ((x > 0 && x < Gdx.graphics.getWidth()) && (y > 0 && y < Gdx.graphics.getHeight()));
 
-        var velocity = MathUtils.random(50, 350);
+        var velocity = 75;
         var centerX = Gdx.graphics.getWidth() / 2;
         var centerY = Gdx.graphics.getHeight() / 2;
         boolean goDown = y > centerY;
         boolean goLeft = x > centerX;
 
-        return new Asteroid(x, y, goDown, goLeft, velocity, body);
+        return new StarGold(x, y, goDown, goLeft, velocity, body);
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        updateAsteroid();
+        updateStarGold();
     }
 
-    private void updateAsteroid() {
+    private void updateStarGold() {
         if (goDown) {
             y -= velocity * Gdx.graphics.getDeltaTime();
         } else {
@@ -60,6 +59,4 @@ public class Asteroid extends FlyingObject {
     public static int getRealHeight() {
         return texture.getHeight();
     }
-
-
 }
