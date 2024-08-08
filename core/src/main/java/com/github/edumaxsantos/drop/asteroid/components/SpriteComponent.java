@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class SpriteComponent implements Component {
-    private Sprite sprite;
+    private final Sprite sprite;
 
     public SpriteComponent(Texture texture) {
         this.sprite = new Sprite(texture);

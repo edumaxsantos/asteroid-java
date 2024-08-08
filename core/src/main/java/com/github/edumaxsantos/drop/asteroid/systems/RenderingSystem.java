@@ -4,12 +4,10 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.github.edumaxsantos.drop.asteroid.components.PositionComponent;
 import com.github.edumaxsantos.drop.asteroid.components.SpriteComponent;
 
 public class RenderingSystem extends IteratingSystem {
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
 
     public RenderingSystem(SpriteBatch batch) {
         super(Family.all(SpriteComponent.class).get());
