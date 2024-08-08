@@ -29,15 +29,22 @@ public class PlayerMovementSystem extends IteratingSystem {
         var movement = new Vector2();
 
         if (input.left) {
-            movement.x = -speed * deltaTime;
-        } else if (input.right) {
-            movement.x = speed * deltaTime;
+            movement.x -= 1;
+        }
+        if (input.right) {
+            movement.x += 1;
         }
 
         if (input.up) {
-            movement.y = speed * deltaTime;
-        } else if (input.down) {
-            movement.y = -speed * deltaTime;
+            movement.y += 1;
+        }
+        if (input.down) {
+            movement.y -= 1;
+        }
+
+        if (!movement.isZero()) {
+            movement.nor();
+            movement.scl(speed * deltaTime);
         }
 
         position.setX(position.getX() + movement.x);
