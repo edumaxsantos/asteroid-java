@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Align;
 
 import java.time.temporal.ValueRange;
 
-public class FlyingObject extends Actor {
+public abstract class FlyingObject extends Actor {
     protected final Texture texture;
     protected float x;
     protected float y;

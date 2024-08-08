@@ -34,6 +34,8 @@ public class BodyFactory {
         body.createFixture(shape, 1f);
         shape.dispose();
 
+        body.setLinearDamping(0);
+
         return body;
     }
 }

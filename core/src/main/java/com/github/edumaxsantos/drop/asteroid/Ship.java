@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -66,7 +67,7 @@ public class Ship extends Group {
             if (TimeUtils.nanoTime() - lastNano > TimeUnit.MILLISECONDS.toNanos(FIRING_SPEED_IN_MS)) {
                 var initialPosition = new Vector2(getX() + getRealWidth(), getY() + getRealHeight());
                 var mousePosition = new Vector2(mouseX, mouseY);
-                var body = createBox(screen.world, initialPosition, 1, Missile.SIZE, BodyDef.BodyType.DynamicBody);
+                var body = createBox(screen.world, initialPosition, Missile.getRealWidth(), Missile.getRealHeight(), BodyDef.BodyType.DynamicBody);
                 missiles.add(new Missile(this, screen.game.stage.getBatch(), initialPosition, mousePosition, body));
                 lastNano = TimeUtils.nanoTime();
             }
@@ -74,15 +75,7 @@ public class Ship extends Group {
         }
 
         handleMovement(delta);
-        for(var missile : missiles) {
-            if (!missile.isVisible()) {
-                missiles.removeValue(missile, false);
-                screen.world.destroyBody(missile.getBody());
-                continue;
-            }
-            missile.act(delta);
-            missile.draw(screen.game.stage.getBatch(), 1);
-        }
+        //handleMissiles(delta);
 
         healthBar.act(delta);
     }
@@ -101,6 +94,18 @@ public class Ship extends Group {
         healthBar.setVisible(true);
     }
 
+    private void handleMissiles(float delta) {
+        for(var missile : missiles) {
+            if (!missile.isVisible()) {
+                missiles.removeValue(missile, false);
+                screen.world.destroyBody(missile.getBody());
+                continue;
+            }
+            missile.act(delta);
+            missile.draw(screen.game.stage.getBatch(), 1);
+        }
+    }
+
     private void centerShip() {
         this.setPosition((float) Gdx.graphics.getWidth() / 2 - this.getWidth() /2, (float) Gdx.graphics.getHeight() / 2 - this.getHeight() / 2);
     }
@@ -114,6 +119,7 @@ public class Ship extends Group {
     }
 
     private void handleMovement(float delta) {
+
         var velocity = SPEED * delta;
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             this.setX(this.getX() - velocity);

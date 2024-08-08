@@ -10,29 +10,27 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 import java.time.temporal.ValueRange;
+import java.util.concurrent.TimeUnit;
 
 public class Missile extends Actor {
+    private final static Texture texture = new Texture(Gdx.files.internal("asteroid/laserBlue03.png"));
 
     public final static int SIZE = 25;
     private final static int SPEED = 700;
     private final Vector2 p1;
     private final Vector2 p2;
-    private final ShapeDrawer drawer;
     private final Vector2 normalizedVector;
     private final Body body;
     private final float damage;
+    private float initial;
 
     public Missile(Ship ship, Batch batch, Vector2 shipPosition, Vector2 mouse, Body body) {
         this.setParent(ship);
         this.body = body;
-        var pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        TextureRegion textureRegion = new TextureRegion(new Texture(pixmap));
-        pixmap.dispose();
 
         p1 = shipPosition.cpy();
         p2 = p1.cpy();
@@ -41,16 +39,28 @@ public class Missile extends Actor {
 
         p2.mulAdd(normalizedVector, SIZE);
 
-        drawer = new ShapeDrawer(batch, textureRegion);
-
         body.setUserData(this);
         damage = 50f;
+
+        System.out.println(body.getPosition());
+        System.out.println(getPosition());
+
+        //setPosition(body.getPosition().x, body.getPosition().y);
+
+        setWidth(texture.getWidth());
+        setHeight(texture.getHeight());
+        setOrigin(getX(), getY());
+        setScale(1f);
+        initial = Gdx.graphics.getDeltaTime();
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.begin();
-        drawer.line(p1, p2);
+        setRotation(body.getAngle() * MathUtils.radiansToDegrees);
+        //System.out.println(getRotation());
+        batch.draw(new TextureRegion(texture), getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), getScaleX(), getScaleY(), getRotation());
+        //drawer.line(p1, p2);
         batch.end();
     }
 
@@ -62,7 +72,15 @@ public class Missile extends Actor {
         p1.add(translatedVector);
         p2.add(translatedVector);
 
-        body.setTransform(p2.x, p2.y, calculateAngle(p1, p2));
+        if (delta - initial > 0) {
+            System.out.println("here");
+        }
+
+        //body.setTransform(getX(), getY(), translatedVector.angleDeg());
+
+        body.setTransform(p1.x, p1.y, calculateAngle(p1, p2));
+
+        setPosition(body.getPosition().x + getWidth(), body.getPosition().y);
 
 
         var widthBounds = ValueRange.of(0, Gdx.graphics.getWidth());
@@ -85,7 +103,19 @@ public class Missile extends Actor {
         return body;
     }
 
+    public Vector2 getPosition() {
+        return new Vector2(getX(), getY());
+    }
+
     public float getDamage() {
         return damage;
+    }
+
+    public static int getRealWidth() {
+        return texture.getWidth();
+    }
+
+    public static int getRealHeight() {
+        return texture.getHeight();
     }
 }

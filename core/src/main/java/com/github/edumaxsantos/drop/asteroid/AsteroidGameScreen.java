@@ -55,8 +55,8 @@ public class AsteroidGameScreen extends ScreenAdapter {
 
         world.setContactListener(new MyContactListener());
 
-        handleAsteroids();
-        handleStarGolds();
+        //handleAsteroids();
+        //handleStarGolds();
 
     }
 
@@ -79,16 +79,13 @@ public class AsteroidGameScreen extends ScreenAdapter {
         for (var flyingObject : flyingObjects) {
             flyingObject.act(delta);
             flyingObject.draw(stage.getBatch(), 1);
+            if (flyingObject.shouldBeDestroyed()) {
+                world.destroyBody(flyingObject.getBody());
+                flyingObjects.removeValue(flyingObject, false);
+            }
         }
 
         stage.getBatch().end();
-
-        for (var asteroid : flyingObjects) {
-            if (asteroid.shouldBeDestroyed()) {
-                world.destroyBody(asteroid.getBody());
-                flyingObjects.removeValue(asteroid, false);
-            }
-        }
     }
 
     @Override
