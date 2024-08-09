@@ -9,12 +9,11 @@ import com.github.edumaxsantos.drop.asteroid.components.health.HealthBarComponen
 import com.github.edumaxsantos.drop.asteroid.components.health.HealthComponent;
 
 public class HealthSystem extends EntitySystem {
-
+    private final static float TIME_TO_DISPLAY = 2f; // in seconds
     private final World world;
     private final Array<Entity> entitiesToRemove;
 
     public HealthSystem(World world) {
-        //super(Family.all(HealthComponent.class).get());
         entitiesToRemove = new Array<>();
         this.world = world;
     }
@@ -24,7 +23,6 @@ public class HealthSystem extends EntitySystem {
         super.update(deltaTime);
 
         entitiesToRemove.forEach(entity -> {
-            System.out.println("Is dead");
             var body = entity.getComponent(BodyComponent.class).body;
             world.destroyBody(body);
             getEngine().removeEntity(entity);
@@ -45,7 +43,7 @@ public class HealthSystem extends EntitySystem {
             }
 
             if (healthBar != null) {
-                healthBar.timeVisible = 2f;
+                healthBar.timeVisible = TIME_TO_DISPLAY;
             }
         }
     }

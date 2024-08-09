@@ -66,7 +66,7 @@ public class GameScreen extends ScreenAdapter {
 
         world.setContactListener(collisionListener);
 
-        healthBarRenderingSystem = new HealthBarRenderingSystem(batch);
+        healthBarRenderingSystem = new HealthBarRenderingSystem();
         gridRenderingSystem = new GridRenderingSystem(camera);
 
         var player = createPlayer();
@@ -191,9 +191,6 @@ public class GameScreen extends ScreenAdapter {
         debugRenderer.render(world, game.stage.getCamera().combined);
 
         engine.update(delta);
-
-
-
     }
 
     @Override

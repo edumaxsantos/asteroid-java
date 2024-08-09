@@ -5,24 +5,21 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
-import com.github.edumaxsantos.drop.asteroid.components.BodyComponent;
 import com.github.edumaxsantos.drop.asteroid.components.PositionComponent;
+import com.github.edumaxsantos.drop.asteroid.components.SpriteComponent;
 import com.github.edumaxsantos.drop.asteroid.components.health.HealthBarComponent;
 import com.github.edumaxsantos.drop.asteroid.components.health.HealthComponent;
 
 public class HealthBarRenderingSystem extends IteratingSystem {
 
     private final static float MAX_SIZE = 100;
-    private SpriteBatch batch;
-    private ShapeRenderer shapeRenderer;
-    private BitmapFont font;
+    private final ShapeRenderer shapeRenderer;
+    private final BitmapFont font;
 
-    public HealthBarRenderingSystem(SpriteBatch batch) {
-        super(Family.all(PositionComponent.class, HealthComponent.class, HealthBarComponent.class).get());
-        this.batch = batch;
+    public HealthBarRenderingSystem() {
+        super(Family.all(PositionComponent.class, HealthComponent.class, HealthBarComponent.class, SpriteComponent.class).get());
         this.shapeRenderer = new ShapeRenderer();
         this.font = new BitmapFont();
     }
@@ -32,10 +29,13 @@ public class HealthBarRenderingSystem extends IteratingSystem {
         var position = entity.getComponent(PositionComponent.class);
         var health = entity.getComponent(HealthComponent.class);
         var healthBar = entity.getComponent(HealthBarComponent.class);
+        var sprite = entity.getComponent(SpriteComponent.class);
 
         if (healthBar.timeVisible > 0) {
+            healthBar.timeVisible -= deltaTime;
+
             var x = position.getX() - 30;
-            var y = position.getY() + 75;
+            var y = position.getY() + sprite.getSprite().getHeight();
 
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
@@ -47,10 +47,6 @@ public class HealthBarRenderingSystem extends IteratingSystem {
             shapeRenderer.rect(x - 25, y, currentWidth, 5);
 
             shapeRenderer.end();
-
-            /*batch.begin();
-            font.draw(batch, "HP: " + health.health, x - 25, y + 15);
-            batch.end();*/
         }
     }
 
