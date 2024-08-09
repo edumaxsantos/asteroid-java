@@ -1,37 +1,22 @@
 package com.github.edumaxsantos.drop.asteroid.systems.health;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.github.edumaxsantos.drop.asteroid.components.BodyComponent;
 import com.github.edumaxsantos.drop.asteroid.components.health.HealthBarComponent;
 import com.github.edumaxsantos.drop.asteroid.components.health.HealthComponent;
 
-public class HealthSystem extends IteratingSystem {
+public class HealthSystem extends EntitySystem {
 
-    private World world;
-    private Array<Entity> entitiesToRemove;
+    private final World world;
+    private final Array<Entity> entitiesToRemove;
 
     public HealthSystem(World world) {
-        super(Family.all(HealthComponent.class).get());
+        //super(Family.all(HealthComponent.class).get());
         entitiesToRemove = new Array<>();
         this.world = world;
-    }
-
-    @Override
-    protected void processEntity(Entity entity, float deltaTime) {
-        var health = entity.getComponent(HealthComponent.class).health;
-        var healthBar = entity.getComponent(HealthBarComponent.class);
-
-        if (health <= 0) {
-            entitiesToRemove.add(entity);
-        }
-
-        if (healthBar.timeVisible > 0) {
-            healthBar.timeVisible -= deltaTime;
-        }
     }
 
     @Override
@@ -56,12 +41,18 @@ public class HealthSystem extends IteratingSystem {
             health.health -= amount;
 
             if (health.health <= 0) {
-                entitiesToRemove.add(entity);
+                addToRemoveList(entity);
             }
 
             if (healthBar != null) {
                 healthBar.timeVisible = 2f;
             }
+        }
+    }
+
+    private void addToRemoveList(Entity entity) {
+        if (!entitiesToRemove.contains(entity, false)) {
+            entitiesToRemove.add(entity);
         }
     }
 }

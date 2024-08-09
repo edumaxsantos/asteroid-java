@@ -9,6 +9,7 @@ public class SpriteComponent implements Component {
 
     public SpriteComponent(Texture texture) {
         this.sprite = new Sprite(texture);
+        sprite.setOriginCenter();
     }
 
     public Sprite getSprite() {

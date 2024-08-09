@@ -7,7 +7,7 @@ public class PositionComponent implements Component {
     public Vector2 position = new Vector2();
 
     public void set(Vector2 position) {
-        this.position.set(position);
+        this.position.set(position.cpy());
     }
 
     public void set(float x, float y) {
