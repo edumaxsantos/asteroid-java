@@ -15,8 +15,6 @@ import com.github.edumaxsantos.drop.asteroid.components.*;
 import com.github.edumaxsantos.drop.asteroid.data.EntityData;
 import com.github.edumaxsantos.drop.asteroid.enums.ElementType;
 
-import java.util.concurrent.TimeUnit;
-
 import static com.github.edumaxsantos.drop.asteroid.BodyFactory.createBox;
 
 public class InputSystem extends IteratingSystem {
