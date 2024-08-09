@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 import static com.github.edumaxsantos.drop.asteroid.BodyFactory.createBox;
 
 public class InputSystem extends IteratingSystem {
-    private static final long SHOOT_COOLDOWN = TimeUnit.SECONDS.toMillis(1);
+    private static final long SHOOT_COOLDOWN = 500;
     private long lastShotTime;
 
     private final Entity player;
@@ -86,7 +86,7 @@ public class InputSystem extends IteratingSystem {
 
         var position = new PositionComponent();
         var velocity = new VelocityComponent();
-        var missileSpeed = 350;
+        var missileSpeed = 600;
 
         var playerPosition = player.getComponent(PositionComponent.class);
         var playerRotation = player.getComponent(RotationComponent.class);
