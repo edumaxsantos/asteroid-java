@@ -80,6 +80,7 @@ public class GameScreen extends ScreenAdapter {
         engine.addSystem(new HealthSystem(world));
         engine.addSystem(healthBarRenderingSystem);
         engine.addSystem(gridRenderingSystem);
+        engine.addSystem(new ScoreRenderingSystem(batch));
 
 
 
@@ -164,6 +165,7 @@ public class GameScreen extends ScreenAdapter {
         var health = new HealthComponent(500);
         var healthBar = new HealthBarComponent();
         var damage = new DamageComponent(75);
+        var score = new ScoreComponent();
 
 
         body.setUserData(new EntityData(ElementType.PLAYER, player));
@@ -176,6 +178,7 @@ public class GameScreen extends ScreenAdapter {
         player.add(health);
         player.add(healthBar);
         player.add(damage);
+        player.add(score);
 
         return player;
     }

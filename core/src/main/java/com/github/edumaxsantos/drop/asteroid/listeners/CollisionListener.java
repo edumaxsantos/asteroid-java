@@ -2,10 +2,13 @@ package com.github.edumaxsantos.drop.asteroid.listeners;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.github.edumaxsantos.drop.asteroid.components.BodyComponent;
 import com.github.edumaxsantos.drop.asteroid.components.DamageComponent;
+import com.github.edumaxsantos.drop.asteroid.components.ScoreComponent;
+import com.github.edumaxsantos.drop.asteroid.components.health.HealthComponent;
 import com.github.edumaxsantos.drop.asteroid.data.EntityData;
 import com.github.edumaxsantos.drop.asteroid.enums.ElementType;
 import com.github.edumaxsantos.drop.asteroid.systems.health.HealthSystem;
@@ -46,6 +49,13 @@ public class CollisionListener implements ContactListener {
         healthSystem.reduceHealth(asteroid, damage.damage);
 
         var body = missile.getComponent(BodyComponent.class).body;
+
+        var asteroidHealth = asteroid.getComponent(HealthComponent.class);
+
+        if (asteroidHealth.isDead()) {
+            var player = engine.getEntitiesFor(Family.one(ScoreComponent.class).get()).first();
+            player.getComponent(ScoreComponent.class).score++;
+        }
 
         bodiesToRemove.add(body);
         engine.removeEntity(missile);

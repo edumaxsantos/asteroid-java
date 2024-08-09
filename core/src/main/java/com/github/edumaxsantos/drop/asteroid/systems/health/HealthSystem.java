@@ -36,9 +36,9 @@ public class HealthSystem extends EntitySystem {
         var healthBar = entity.getComponent(HealthBarComponent.class);
 
         if (health != null) {
-            health.health -= amount;
+            health.reduceHealth(amount);
 
-            if (health.health <= 0) {
+            if (health.isDead()) {
                 addToRemoveList(entity);
             }
 

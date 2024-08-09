@@ -43,7 +43,7 @@ public class HealthBarRenderingSystem extends IteratingSystem {
             shapeRenderer.rect(x - 25, y, MAX_SIZE, 5);
 
             shapeRenderer.setColor(Color.GREEN);
-            var currentWidth = MathUtils.map(0, health.maxHealth, 0, MAX_SIZE, health.health);
+            var currentWidth = MathUtils.map(0, health.maxHealth, 0, MAX_SIZE, health.getHealth());
             shapeRenderer.rect(x - 25, y, currentWidth, 5);
 
             shapeRenderer.end();
